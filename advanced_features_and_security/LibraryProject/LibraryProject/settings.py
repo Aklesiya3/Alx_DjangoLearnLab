@@ -152,3 +152,20 @@ SECURE_HSTS_SECONDS = 31536000  # HSTS header
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True  # Important in production
+
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Secure cookies
+SESSION_COOKIE_SECURE = True  # Ensure session cookies are sent only over HTTPS
+CSRF_COOKIE_SECURE = True     # Ensure CSRF cookies are sent only over HTTPS
+
+# Additional headers to improve security
+X_FRAME_OPTIONS = 'DENY'  # Prevent clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent MIME sniffing
+SECURE_BROWSER_XSS_FILTER = True    # Enable XSS filter in browsers
+
