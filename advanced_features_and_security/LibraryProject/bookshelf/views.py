@@ -2,7 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import permission_required
 from .models import Book
+from .forms import ExampleForm  # <-- add this import
 
+# Existing permission-based views
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
     books = Book.objects.all()
@@ -10,7 +12,15 @@ def book_list(request):
 
 @permission_required('bookshelf.can_create', raise_exception=True)
 def add_book(request):
-    return HttpResponse("Book created successfully (dummy).")
+    # Use ExampleForm to create a book
+    if request.method == "POST":
+        form = ExampleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Book created successfully.")
+    else:
+        form = ExampleForm()
+    return render(request, 'bookshelf/form_example.html', {'form': form})
 
 @permission_required('bookshelf.can_edit', raise_exception=True)
 def edit_book(request, book_id):
@@ -21,4 +31,5 @@ def edit_book(request, book_id):
 def delete_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     return HttpResponse(f"Deleted book: {book.title}")
+
 #edited
