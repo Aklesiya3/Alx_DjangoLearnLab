@@ -16,12 +16,21 @@ def books_in_library(library_name):
     except Library.DoesNotExist:
         return []
 
-# 3. Retrieve the librarian for a library
+# 3. Retrieve the librarian for a library (expected: Librarian.objects.get(library=...))
 def librarian_of_library(library_name):
     try:
         library = Library.objects.get(name=library_name)
-        return library.librarian
+        return Librarian.objects.get(library=library)  # ✅ required pattern
     except (Library.DoesNotExist, Librarian.DoesNotExist):
+        return None
+
+
+# Example usage (only when running this file directly)
+if __name__ == "__main__":
+    print("Books by Author 'J.K. Rowling':", books_by_author("J.K. Rowling"))
+    print("Books in 'Central Library':", books_in_library("Central Library"))
+    print("Librarian of 'Central Library':", librarian_of_library("Central Library"))
+
         return None
 
 
