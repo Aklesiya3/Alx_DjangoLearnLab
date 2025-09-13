@@ -21,3 +21,4 @@ def edit_book(request, book_id):
 def delete_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     return HttpResponse(f"Deleted book: {book.title}")
+#edited
