@@ -1,7 +1,7 @@
-from rest_framework import generics , viewsets
+from rest_framework import generics, viewsets
 from .models import Book
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .serializers import BookSerializers
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
 class BookList(generics.ListAPIview):
