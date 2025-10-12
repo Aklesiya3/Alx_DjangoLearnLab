@@ -11,9 +11,9 @@ class Author (models.Model):
 class Book (models.Model):
      # This model stores information about a Book
     title=models.CharField(max_length=200)
-    publication_year=models.ImtegerField()
+    publication_year=models.IntegerField()
     # ForeignKey creates the link between Book and Author
-    author= models.Foreignkey(Author, related_name='books', on_delete=models.CASCADE)
+    author= models.ForeignKey(Author, related_name='books', on_delete=models.CASCADE)
 
     def _str_(self):
         return self.title

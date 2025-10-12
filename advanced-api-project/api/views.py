@@ -1,7 +1,10 @@
-
+from rest_framework import filters , viewsets
 from rest_framework import generics, permissions
-from .models import Book
-from .serializers import BookSerializer
+from .models import Book , Author
+from .serializers import BookSerializer , AuthorSerializer
+from django_filters.rest_framework import DjangoFilterBackend
+
+
 
 #  Anyone can view the list of books
 class BookListView(generics.ListAPIView):
@@ -9,19 +12,16 @@ class BookListView(generics.ListAPIView):
     serializer_class = BookSerializer
     permission_classes = [permissions.AllowAny]  # Or your existing IsAuthenticatedOrReadOnly
 
-    # ✅ Add Filtering & Searching & Ordering
+    #  Add Filtering & Searching & Ordering
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
 
-    # ✅ Step 1: Filtering (Exact Matches)
-    # Example: /books/?title=Harry%20Potter
+   
     filterset_fields = ['title', 'publication_year', 'author__name']
 
-    # ✅ Step 2: Searching (Partial Matches, Case-Insensitive)
-    # Example: /books/?search=harry
+   
     search_fields = ['title', 'author__name']
 
-    # ✅ Step 3: Ordering
-    # Example: /books/?ordering=publication_year  or /books/?ordering=-title
+    
     ordering_fields = ['title', 'publication_year']
 
 #  Anyone can view a single book
@@ -38,8 +38,8 @@ class BookCreateView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        # ✅ Custom Logic Before Saving
-        print("📌 Creating a new Book...")  
+        #  Custom Logic Before Saving
+        print(" Creating a new Book...")  
         serializer.save()  # Actual save operation
 
 
@@ -50,7 +50,7 @@ class BookUpdateView(generics.UpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def update(self, request, *args, **kwargs):
-        print("✏️ Updating a book...")  # Custom pre-processing
+        print(" Updating a book...")  # Custom pre-processing
         return super().update(request, *args, **kwargs)
 
 
@@ -60,4 +60,8 @@ class BookDeleteView(generics.DestroyAPIView):
     serializer_class = BookSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+class AuthorViewSet(viewsets.ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+    permission_classes = [permissions.AllowAny]
 
